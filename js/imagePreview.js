@@ -5,7 +5,8 @@ const SCALE_MAX = 100;
 const SCALE_DEFAULT = 100;
 const SCALE_STEP = 25;
 
-const imagePreview = document.querySelector('.img-upload__preview');
+const imagePreview = document.querySelector('.img-upload__preview img');
+const imagePreviewDiv = document.querySelector('.img-upload__preview');
 const sliderValue = document.querySelector('.effect-level__value');
 const sliderElement = document.querySelector('.effect-level__slider');
 const sliderDiv = document.querySelector('.img-upload__effect-level');
@@ -61,9 +62,13 @@ const effects = {
 };
 let currentEffect = effects.none;
 
+export function setPreviewSource(file) {
+  imagePreview.src = URL.createObjectURL(file);
+}
+
 function resetScale() {
   scaleValue.value = `${SCALE_DEFAULT}%`;
-  imagePreview.style.transform = `scale(${SCALE_DEFAULT / 100})`;
+  imagePreviewDiv.style.transform = `scale(${SCALE_DEFAULT / 100})`;
 }
 
 function onScaleButtonClick(ev) {
@@ -78,7 +83,7 @@ function onScaleButtonClick(ev) {
   }
 
   scaleValue.value = `${newScale}%`;
-  imagePreview.style.transform = `scale(${newScale / 100})`;
+  imagePreviewDiv.style.transform = `scale(${newScale / 100})`;
 }
 
 function resetEffects() {
@@ -114,8 +119,7 @@ function createEffectsSlider() {
       max: 100
     },
     start: 100,
-    step: 0,
-    connect:'lower'
+    step: 10,
   });
   sliderDiv.classList.add('hidden');
   sliderElement.noUiSlider.on('update', updateEffect);
